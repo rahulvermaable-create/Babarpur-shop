@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Babarpur Shop Spin</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap');
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{width:100%;height:100%;margin:0;padding:0;overflow:hidden;background:#F5F0E8;}
+
+:root{
+  --or:#FF6B00; --or2:#FF9500; --grn:#00A550; --red:#E8001D;
+  --gold:#F5A623; --dark:#1A1208; --border:#E2D5C0;
+  --text:#2A1F0E; --muted:#7A6A55; --wa:#25D366;
+}
+
+#app{
+  position:fixed;
+  top:0;left:0;right:0;bottom:0;
+  display:flex;flex-direction:column;
+  font-family:'Baloo 2',cursive;
+  background:#F5F0E8;
+  overflow:hidden;
+}
+
+/* ── TOP SCROLLABLE BANNER ── */
+/* ── TOP BANNER — auto-scroll marquee ── */
+.top-banner{
+  flex-shrink:0;height:72px;
+  background:var(--dark);
+  overflow:hidden;
+  position:relative;
+  border-bottom:2px solid var(--or);
+}
+/* Inner track that scrolls */
+.banner-track{
+  display:flex;align-items:center;
+  gap:10px;padding:6px 0;
+  height:100%;
+  /* auto-scroll animation — set width/duration in JS */
+  white-space:nowrap;
+  will-change:transform;
+  animation:bannerScroll 20s linear infinite;
+}
+.banner-track:hover{ animation-play-state:paused; }
+@keyframes bannerScroll{
+  0%  { transform:translateX(0); }
+  100%{ transform:translateX(-50%); }
+}
+.b-ad{
+  flex-shrink:0;
+  height:58px;
+  width:160px;
+  border-radius:7px;background:#2A2010;
+  border:1px solid rgba(255,150,0,0.3);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;cursor:pointer;
+  background-size:cover;background-position:center;
+}
+.b-ph{font-size:0.6rem;color:rgba(255,200,100,0.5);font-weight:700;text-transform:uppercase;padding:0 8px;text-align:center;}
+
+/* ── TITLE BAR ── */
+.title-bar{
+  flex-shrink:0;height:38px;
+  background:var(--or);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 12px;
+  box-shadow:0 2px 8px rgba(255,107,0,0.3);
+}
+.shop-name{font-size:clamp(0.9rem,4vw,1.15rem);font-weight:800;color:#fff;letter-spacing:0.3px;}
+.btn-admin{
+  background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.4);
+  border-radius:6px;padding:3px 10px;color:#fff;
+  font-family:'Baloo 2',cursive;font-size:0.72rem;font-weight:700;cursor:pointer;
+}
+
+/* ── MAIN 3-COLUMN ── */
+.main-area{
+  flex:1;display:flex;align-items:stretch;
+  overflow:hidden;min-height:0;
+  padding:6px 4px 0;gap:4px;
+  width:100%;
+}
+
+/* ── AD COLUMNS ── */
+.ad-col{
+  flex:1;display:flex;flex-direction:column;
+  gap:5px;min-width:0;overflow:hidden;
+}
+.ad-slot{
+  flex:1;min-height:0;
+  background:#fff;border:1.5px solid var(--border);
+  border-radius:10px;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;position:relative;
+  box-shadow:0 2px 6px rgba(0,0,0,0.06);
+}
+/* img fills the full slot using absolute positioning — works regardless of flex */
+.ad-slot img{
+  position:absolute;top:0;left:0;
+  width:100%;height:100%;
+  object-fit:cover;display:block;
+  border-radius:8px;
+}
+.slot-ph{
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:3px;padding:6px;text-align:center;
+  width:100%;height:100%;
+}
+.slot-ph .si{font-size:1.2rem;opacity:0.3;}
+.slot-ph .st{font-size:0.48rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:0.3px;}
+.ad-slot.prem::after{
+  content:'⭐';position:absolute;top:3px;right:3px;
+  font-size:0.55rem;background:var(--gold);border-radius:3px;padding:1px 3px;
+}
+
+/* ── REEL COLUMN ── */
+.reel-col{
+  flex-shrink:0;
+  width:42vw;min-width:120px;
+  display:flex;flex-direction:column;
+  align-items:center;position:relative;
+}
+
+/* ── PREMIUM ARROW TRIANGLE ── */
+.arrow-wrap{
+  position:absolute;
+  right:-88px;
+  top:50%;transform:translateY(-50%);
+  z-index:30;cursor:pointer;
+  width:88px;height:110px;
+  filter:drop-shadow(0 0 8px rgba(255,107,0,0.8)) drop-shadow(-2px 2px 4px rgba(0,0,0,0.5));
+}
+.arrow-svg-bg{
+  position:absolute;top:0;left:0;
+  width:88px;height:110px;
+}
+.arrow-inner{
+  position:absolute;top:0;right:0;
+  width:60px;height:110px;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:4px;pointer-events:none;
+  padding-right:6px;
+}
+.arrow-logo{
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(255,255,255,0.25);
+  border:2px solid rgba(255,255,255,0.6);
+  overflow:hidden;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.arrow-logo img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.arrow-initials{font-size:0.75rem;font-weight:800;color:#fff;text-align:center;}
+.arrow-name{
+  font-size:0.46rem;font-weight:800;color:#fff;
+  text-align:center;line-height:1.2;max-width:52px;
+  word-break:break-word;text-shadow:0 1px 4px rgba(0,0,0,0.7);
+}
+
+/* WIN tag on reel edge */
+.win-tag{
+  position:absolute;left:-2px;top:50%;transform:translateY(-50%);
+  background:var(--or);color:#fff;
+  font-size:0.42rem;font-weight:800;
+  padding:1px 3px;border-radius:3px 0 0 3px;
+  letter-spacing:0.5px;z-index:10;text-transform:uppercase;
+}
+
+/* ── REEL WINDOW ── */
+.reel-win{
+  width:100%;flex:1;min-height:0;
+  background:#040208;
+  border:2px solid var(--or);
+  border-radius:10px;overflow:hidden;
+  position:relative;
+  box-shadow:inset 0 0 30px rgba(0,0,0,0.9),0 4px 12px rgba(255,107,0,0.15);
+}
+/* Top/bottom fade */
+.reel-win::before{
+  content:'';position:absolute;inset:0;z-index:20;
+  pointer-events:none;border-radius:8px;
+  background:linear-gradient(180deg,
+    rgba(4,2,8,0.95) 0%,rgba(4,2,8,0.7) 8%,rgba(4,2,8,0.2) 20%,
+    transparent 30%,transparent 70%,
+    rgba(4,2,8,0.2) 80%,rgba(4,2,8,0.7) 92%,rgba(4,2,8,0.95) 100%);
+}
+/* Win line */
+.reel-win::after{
+  content:'';position:absolute;
+  left:0;right:0;top:50%;transform:translateY(-50%);
+  height:2px;z-index:25;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(255,150,0,0.6),rgba(255,215,0,1),rgba(255,150,0,0.6),transparent);
+  box-shadow:0 0 10px 2px rgba(255,180,0,0.4);
+}
+#reelCanvas{display:block;width:100%;height:100%;position:absolute;top:0;left:0;z-index:5;}
+.reel-win.wf{animation:wf 0.32s ease-in-out 4;}
+@keyframes wf{
+  0%,100%{border-color:var(--or);}
+  50%{border-color:#FFD700;box-shadow:inset 0 0 10px rgba(0,0,0,0.5),0 0 18px rgba(255,215,0,0.6);}
+}
+
+/* ── BOTTOM BAR ── */
+.bottom-bar{
+  flex-shrink:0;height:60px;
+  background:var(--dark);
+  display:flex;align-items:center;
+  padding:0 10px;gap:10px;
+  border-top:2px solid var(--or);
+}
+.btn-wa-help{
+  flex-shrink:0;width:40px;height:40px;
+  background:var(--wa);border:none;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:1.25rem;
+  box-shadow:0 3px 10px rgba(37,211,102,0.4);
+}
+.spin-btn{
+  flex:1;height:42px;
+  background:linear-gradient(135deg,var(--or),#CC0010);
+  border:none;border-radius:10px;
+  color:#fff;font-family:'Baloo 2',cursive;
+  font-size:clamp(1rem,4.5vw,1.3rem);font-weight:800;
+  letter-spacing:3px;cursor:pointer;
+  box-shadow:0 3px 12px rgba(255,80,0,0.4);
+  transition:transform 0.1s;
+}
+.spin-btn:disabled{opacity:0.45;cursor:not-allowed;}
+.spin-cost{
+  flex-shrink:0;font-size:0.62rem;
+  color:rgba(255,200,100,0.8);text-align:center;line-height:1.4;font-weight:700;
+}
+
+/* ── WIN POPUP ── */
+.pop-ov{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(0,0,0,0.72);
+  display:none;align-items:center;justify-content:center;padding:20px;
+}
+.pop-ov.open{display:flex;}
+.win-pop{
+  background:#fff;border-radius:20px;width:100%;max-width:300px;
+  overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.5);
+  animation:popIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes popIn{from{transform:scale(0.6);opacity:0;}to{transform:scale(1);opacity:1;}}
+.pop-head{
+  background:linear-gradient(135deg,var(--or),#E83000);
+  padding:18px 20px 14px;text-align:center;
+}
+.pop-head .em{font-size:2.2rem;display:block;margin-bottom:4px;}
+.pop-head h2{color:#fff;font-size:1.15rem;font-weight:800;}
+.pop-head p{color:rgba(255,255,255,0.85);font-size:0.78rem;}
+.pop-body{padding:16px 18px;}
+.disc-badge{
+  text-align:center;background:linear-gradient(135deg,#FFF3E0,#FFE0B2);
+  border:2px solid var(--or);border-radius:12px;padding:12px;margin-bottom:12px;
+}
+.disc-val{font-size:2.6rem;font-weight:800;color:var(--or);line-height:1;}
+.disc-shop{font-size:0.84rem;color:var(--text);font-weight:700;margin-top:3px;}
+.pop-hint{font-size:0.7rem;color:var(--muted);text-align:center;margin-bottom:12px;line-height:1.5;}
+.btn-claim{
+  width:100%;background:var(--wa);border:none;border-radius:9px;
+  padding:11px;margin-bottom:7px;color:#fff;
+  font-family:'Baloo 2',cursive;font-size:0.95rem;font-weight:800;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;
+}
+.btn-pop-close{
+  width:100%;background:#f0f0f0;border:none;border-radius:9px;
+  padding:9px;color:var(--muted);font-family:'Baloo 2',cursive;
+  font-size:0.85rem;font-weight:700;cursor:pointer;
+}
+
+/* ── ADMIN MODAL ── */
+.ov{
+  position:fixed;inset:0;z-index:300;
+  background:rgba(0,0,0,0.82);
+  display:none;align-items:center;justify-content:center;padding:14px;
+}
+.ov.open{display:flex;}
+.modal{
+  background:#fff;border-radius:16px;padding:20px;
+  width:100%;max-width:330px;max-height:92vh;overflow-y:auto;
+  box-shadow:0 20px 60px rgba(0,0,0,0.4);
+}
+.modal h3{font-size:0.95rem;color:var(--or);margin-bottom:12px;font-weight:800;}
+.ml{font-size:0.67rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin:10px 0 4px;font-weight:700;}
+.mi{
+  width:100%;background:#fafafa;border:1.5px solid var(--border);
+  border-radius:8px;padding:8px 10px;color:var(--text);
+  font-family:'Baloo 2',cursive;font-size:0.88rem;outline:none;
+}
+.mi:focus{border-color:var(--or);}
+.mbtn{
+  width:100%;margin-top:8px;
+  background:linear-gradient(135deg,var(--or),#CC0010);
+  border:none;border-radius:9px;padding:10px;
+  color:#fff;font-family:'Baloo 2',cursive;font-size:0.9rem;font-weight:800;cursor:pointer;
+}
+.mbtn.ghost{background:#f0f0f0;color:var(--muted);border:1.5px solid var(--border);margin-top:6px;}
+.err-msg{background:#FFF0F0;border:1px solid #FFCCCC;border-radius:7px;padding:6px 10px;font-size:0.75rem;color:var(--red);margin-bottom:8px;display:none;}
+.shop-card{background:#fafafa;border:1.5px solid var(--border);border-radius:10px;padding:11px;margin-bottom:9px;}
+.sc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;}
+.sc-head span{font-size:0.76rem;font-weight:800;color:var(--or);}
+.btn-del{background:none;border:none;color:#ccc;font-size:1rem;cursor:pointer;padding:0 4px;}
+.disc-grid{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;}
+.dc{
+  background:#fff;border:1.5px solid var(--border);
+  border-radius:5px;padding:2px 8px;
+  font-size:0.7rem;font-weight:700;color:var(--text);cursor:pointer;
+}
+.dc.on{background:var(--or);color:#fff;border-color:var(--or);}
+.info-box{
+  background:#FFF8EE;border:1px solid #FFE0B2;border-radius:8px;
+  padding:8px 10px;font-size:0.68rem;color:#7A5020;line-height:1.7;margin-top:5px;
+}
+
+/* confetti */
+.cf{position:fixed;pointer-events:none;z-index:999;animation:cff linear forwards;}
+@keyframes cff{0%{transform:translateY(-10px) rotate(0deg) scale(1);opacity:1}100%{transform:translateY(700px) rotate(720deg) scale(.1);opacity:0}}
+</style>
+<script>
+// Fix mobile browser — set app height directly in pixels using innerHeight
+// NOTE: getElementById('app') must only be called after DOM is ready
+function fixHeight(){
+  var app = document.getElementById('app');
+  if(app) app.style.height = window.innerHeight + 'px';
+  document.documentElement.style.height = window.innerHeight + 'px';
+  if(document.body) document.body.style.height = window.innerHeight + 'px';
+}
+// Do NOT call fixHeight() here — DOM not ready yet
+// Register all event listeners (they fire after DOM is ready)
+window.addEventListener('resize',             fixHeight);
+window.addEventListener('orientationchange',  function(){ fixHeight(); setTimeout(fixHeight,300); setTimeout(fixHeight,600); });
+window.addEventListener('scroll',             fixHeight);
+document.addEventListener('DOMContentLoaded', function(){ fixHeight(); });
+window.addEventListener('load',               function(){ fixHeight(); setTimeout(fixHeight,200); setTimeout(fixHeight,600); });
+// Interval after load as final fallback
+window.addEventListener('load', function(){
+  var n=0, iv=setInterval(function(){ fixHeight(); if(++n>=10) clearInterval(iv); },300);
+});
+</script>
+</head>
+<body>
+<div id="app">
+
+  <!-- SCROLLABLE BANNER -->
+  <div class="top-banner" id="topBannerOuter"><div class="banner-track" id="topBanner"></div></div>
+
+  <!-- TITLE BAR -->
+  <div class="title-bar">
+    <div class="shop-name" id="shopTitle">🏪 Babarpur Shop</div>
+    <button class="btn-admin" onclick="openAdmin()">⚙️ Admin</button>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main-area">
+
+    <!-- LEFT ADS -->
+    <div class="ad-col">
+      <div class="ad-slot prem" id="lad0"><div class="slot-ph"><div class="si">🌟</div><div class="st">Premium Ad</div></div></div>
+      <div class="ad-slot"      id="lad1"><div class="slot-ph"><div class="si">📢</div><div class="st">Ad Slot</div></div></div>
+      <div class="ad-slot"      id="lad2"><div class="slot-ph"><div class="si">📢</div><div class="st">Ad Slot</div></div></div>
+    </div>
+
+    <!-- REEL -->
+    <div class="reel-col">
+
+      <!-- PREMIUM ARROW TRIANGLE — shop name & logo live here -->
+      <div class="arrow-wrap" id="arrowWrap" onclick="arrowClick()">
+        <svg class="arrow-svg-bg" viewBox="0 0 88 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="tg" x1="1" y1="0" x2="0" y2="0">
+              <stop offset="0%" stop-color="#FF9500"/>
+              <stop offset="100%" stop-color="#E83000"/>
+            </linearGradient>
+          </defs>
+          <!-- Points LEFT ← tip at x=0, base on right -->
+          <polygon points="88,0 0,55 88,110" fill="url(#tg)"/>
+          <polygon points="88,6 16,55 88,104" fill="rgba(255,255,255,0.09)"/>
+          <polygon points="88,0 0,55 88,110" fill="none" stroke="rgba(255,200,0,0.4)" stroke-width="2"/>
+        </svg>
+        <div class="arrow-inner">
+          <div class="arrow-logo" id="arrowLogo">
+            <span class="arrow-initials" id="arrowInitials">SP</span>
+          </div>
+          <div class="arrow-name" id="arrowName">SPONSOR</div>
+        </div>
+      </div>
+
+      <div class="win-tag">WIN</div>
+
+      <div class="reel-win" id="rw">
+        <canvas id="reelCanvas"></canvas>
+      </div>
+    </div>
+
+    <!-- RIGHT ADS -->
+    <div class="ad-col">
+      <div class="ad-slot prem" id="rad0"><div class="slot-ph"><div class="si">🌟</div><div class="st">Premium Ad</div></div></div>
+      <div class="ad-slot"      id="rad1"><div class="slot-ph"><div class="si">📢</div><div class="st">Ad Slot</div></div></div>
+      <div class="ad-slot"      id="rad2"><div class="slot-ph"><div class="si">📢</div><div class="st">Ad Slot</div></div></div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM BAR -->
+  <div style="background:#111;text-align:center;padding:3px 0;font-family:'Baloo 2',cursive;font-size:0.65rem;color:rgba(255,200,100,0.5);" id="statsDisplay">👥 Loading...</div>
+  <div class="bottom-bar">
+    <button class="btn-wa-help" onclick="waHelp()">💬</button>
+    <button class="spin-btn" id="spinBtn" onclick="doSpin()">SPIN</button>
+    <div class="spin-cost">खेलना<br><span style="color:#FFD700;font-size:0.82rem;font-weight:800">FREE</span></div>
+  </div>
+
+</div>
+
+<!-- LOADER -->
+<div id="loader" style="position:fixed;inset:0;z-index:500;background:rgba(26,18,8,0.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;">
+  <div style="font-size:2.5rem;">🏪</div>
+  <div style="color:#FF9500;font-family:'Baloo 2',cursive;font-size:1.1rem;font-weight:800;">Babarpur Shop</div>
+  <div style="color:rgba(255,200,100,0.7);font-family:'Baloo 2',cursive;font-size:0.78rem;" id="loaderMsg">Cloud से load हो रहा है...</div>
+  <div style="width:50px;height:4px;background:#333;border-radius:2px;overflow:hidden;">
+    <div style="width:100%;height:100%;background:var(--or);animation:ldbar 1s ease-in-out infinite alternate;"></div>
+  </div>
+  <div style="color:rgba(255,150,50,0.5);font-family:'Baloo 2',cursive;font-size:0.65rem;margin-top:8px;max-width:240px;line-height:1.6;" id="loaderSub">यह file Netlify पर upload करें — local file से cloud काम नहीं करता</div>
+</div>
+<style>@keyframes ldbar{from{transform:translateX(-100%)}to{transform:translateX(100%)}}</style>
+
+<!-- SAVE TOAST -->
+<div id="saveToast" style="position:fixed;bottom:72px;left:50%;transform:translateX(-50%);background:#1A1208;color:#FFD700;font-family:'Baloo 2',cursive;font-size:0.78rem;font-weight:700;padding:7px 16px;border-radius:20px;border:1px solid #FF6B00;opacity:0;transition:opacity 0.3s;z-index:400;pointer-events:none;white-space:nowrap;"></div>
+
+<!-- WIN POPUP -->
+<div class="pop-ov" id="winPop">
+  <div class="win-pop">
+    <div class="pop-head">
+      <span class="em">🎉</span>
+      <h2>बधाई हो!</h2>
+      <p>आपने यह discount जीती है</p>
+    </div>
+    <div class="pop-body">
+      <div class="disc-badge">
+        <div class="disc-val" id="popVal">30%</div>
+        <div class="disc-shop" id="popShop">Shop Name</div>
+      </div>
+      <!-- Validity notice -->
+      <div id="validityBox" style="background:#FFF8EE;border:1px solid #FFE0B2;border-radius:8px;padding:7px 10px;margin-bottom:10px;font-size:0.7rem;color:#7A5020;line-height:1.6;text-align:center;">
+        ⏰ <b id="validityText">आज दिन भर valid</b><br>
+        ⚠️ यह discount <b>सिर्फ 1 बार</b> मिलती है — आज दुकान पर जाकर claim करें
+      </div>
+      <p class="pop-hint" id="popHint">नीचे button दबाएं और दुकानदार से discount claim करें।</p>
+      <button class="btn-claim" id="btnClaim" onclick="claimDiscount()">📲 दुकानदार को WhatsApp करें</button>
+      <button class="btn-pop-close" onclick="closeWinPop()">बाद में करूंगा</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN MODAL -->
+<div class="ov" id="adminOv">
+  <div class="modal">
+
+    <div id="pwStep">
+      <h3>🔐 Admin Login</h3>
+      <div class="err-msg" id="pwErr">गलत Password!</div>
+      <div class="ml">Password</div>
+      <input class="mi" type="password" id="pwIn" placeholder="Password" onkeydown="if(event.key==='Enter')chkPw()">
+      <button class="mbtn" onclick="chkPw()">Login</button>
+      <button class="mbtn ghost" onclick="closeAdmin()">Cancel</button>
+    </div>
+
+    <div id="setStep" style="display:none">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <h3 style="margin-bottom:0">⚙️ Admin Settings</h3>
+        <button onclick="closeAdmin()" style="background:none;border:none;font-size:1.4rem;cursor:pointer;color:#999;line-height:1;padding:2px 6px;border-radius:6px;" title="Close">✕</button>
+      </div>
+
+      <div class="ml">🏪 Platform Name</div>
+      <input class="mi" type="text" id="inPlatName" placeholder="Babarpur Shop">
+
+      <div class="ml">🔄 Try Again Slots (रील में कितने TRY AGAIN हों)</div>
+      <input class="mi" type="number" id="inTryAgain" min="0" max="50" placeholder="0 = no try again">
+      <div class="info-box">ज़्यादा संख्या = ज़्यादा बार TRY AGAIN आएगा। 0 = बिल्कुल नहीं।<br>Example: 5 रखो = हर 20 spin में ~1 बार TRY AGAIN आएगा।</div>
+
+      <div class="ml">🔁 Max Spins Per Person Per Day</div>
+      <input class="mi" type="number" id="inMaxSpins" min="1" max="10" placeholder="1">
+      <div class="info-box">1 = हर person सिर्फ 1 बार spin कर सकता है per day।<br>3 = 3 बार spin कर सकता है। Try Again मिले तो extra नहीं मिलता।</div>
+
+      <div class="ml">📊 Spin Statistics</div>
+      <div class="info-box" id="adminStats" style="color:#555">Loading...</div>
+      <div style="display:flex;gap:8px;margin-top:7px;flex-wrap:wrap;">
+        <button onclick="resetDeviceSpin()" style="flex:1;background:rgba(255,107,0,0.15);border:1.5px solid #FF6B00;border-radius:8px;padding:8px;color:#FF6B00;font-family:'Baloo 2',cursive;font-size:0.8rem;font-weight:700;cursor:pointer;">
+          🔄 इस Device का spin reset करें
+        </button>
+        <button onclick="resetAllStats()" style="flex:1;background:rgba(232,0,29,0.1);border:1.5px solid #E8001D;border-radius:8px;padding:8px;color:#E8001D;font-family:'Baloo 2',cursive;font-size:0.8rem;font-weight:700;cursor:pointer;">
+          🗑️ सभी stats reset करें
+        </button>
+      </div>
+      <div style="font-size:0.65rem;color:#aaa;margin-top:4px;line-height:1.5;">
+        ↑ Device reset = सिर्फ इस phone का spin फिर से allow होगा<br>
+        ↑ Stats reset = total + today का count zero होगा
+      </div>
+
+      <div class="ml">📱 आपका WhatsApp (helpline)</div>
+      <input class="mi" type="tel" id="inMyWa" placeholder="919XXXXXXXXX">
+
+      <!-- CallMeBot removed — using direct WA link instead -->
+      <input type="hidden" id="inApiKey" value="">
+
+      <!-- DIMENSIONS GUIDE -->
+      <div style="background:#1A1208;border:1px solid #FF6B00;border-radius:10px;padding:12px;margin-top:10px;">
+        <div style="font-size:0.8rem;font-weight:800;color:#FFD700;margin-bottom:8px;">📐 Image Size Guide (Mobile के लिए)</div>
+        <div style="font-size:0.68rem;color:#FF9500;line-height:2;">
+          📣 <b>Top Banner:</b> <span style="color:#fff">640 × 120 px</span> (wide & short)<br>
+          🟨 <b>Left/Right Ad Slots (Top ⭐):</b> <span style="color:#fff">300 × 400 px</span> (tall portrait)<br>
+          📢 <b>Ad Slots (Mid/Bottom):</b> <span style="color:#fff">300 × 300 px</span> (square)<br>
+          🖼 <b>Shop Image (reel + triangle):</b> <span style="color:#fff">200 × 200 px</span> (square logo)<br>
+          <span style="color:#666;font-size:0.62rem;">imgbb.com पर upload करें → Direct Link copy करें</span>
+        </div>
+      </div>
+
+      <div class="ml" style="margin-top:10px;">📣 Top Banner Ads (auto-scroll होंगे)</div>
+      <div id="bannerSlotList"></div>
+      <button class="mbtn ghost" onclick="addBannerSlot()" style="font-size:0.78rem;margin-top:5px;">+ Banner Add करें</button>
+
+      <div class="ml">🏪 Shops & Discounts</div>
+      <div id="shopList"></div>
+      <button class="mbtn ghost" onclick="addShop()" style="font-size:0.8rem;margin-top:4px">+ नई दुकान जोड़ें</button>
+
+      <div style="background:#1A0A00;border:1px solid #FF6B00;border-radius:10px;padding:12px;margin-top:12px;">
+        <div style="font-size:0.82rem;font-weight:800;color:#FFD700;margin-bottom:8px;">🖼 Side Ad Slots — Image URLs</div>
+
+        <div class="ml" style="margin-top:6px">Left Top ⭐ <small style="color:#FF6B00">300×400px</small></div>
+        <input class="mi" id="ai_lad0" type="text" placeholder="https://i.ibb.co/...">
+        <div id="prev_lad0" style="display:none;margin-top:4px;height:44px;border-radius:6px;border:1.5px solid #00A550;background-size:cover;background-position:center;"></div>
+
+        <div class="ml" style="margin-top:8px">Left Mid <small style="color:#FF6B00">300×300px</small></div>
+        <input class="mi" id="ai_lad1" type="text" placeholder="https://i.ibb.co/...">
+        <div id="prev_lad1" style="display:none;margin-top:4px;height:44px;border-radius:6px;border:1.5px solid #00A550;background-size:cover;background-position:center;"></div>
+
+        <div class="ml" style="margin-top:8px">Left Bottom <small style="color:#FF6B00">300×300px</small></div>
+        <input class="mi" id="ai_lad2" type="text" placeholder="https://i.ibb.co/...">
+        <div id="prev_lad2" style="display:none;margin-top:4px;height:44px;border-radius:6px;border:1.5px solid #00A550;background-size:cover;background-position:center;"></div>
+
+        <div class="ml" style="margin-top:8px">Right Top ⭐ <small style="color:#FF6B00">300×400px</small></div>
+        <input class="mi" id="ai_rad0" type="text" placeholder="https://i.ibb.co/...">
+        <div id="prev_rad0" style="display:none;margin-top:4px;height:44px;border-radius:6px;border:1.5px solid #00A550;background-size:cover;background-position:center;"></div>
+
+        <div class="ml" style="margin-top:8px">Right Mid <small style="color:#FF6B00">300×300px</small></div>
+        <input class="mi" id="ai_rad1" type="text" placeholder="https://i.ibb.co/...">
+        <div id="prev_rad1" style="display:none;margin-top:4px;height:44px;border-radius:6px;border:1.5px solid #00A550;background-size:cover;background-position:center;"></div>
+
+        <div class="ml" style="margin-top:8px">Right Bottom <small style="color:#FF6B00">300×300px</small></div>
+        <input class="mi" id="ai_rad2" type="text" placeholder="https://i.ibb.co/...">
+        <div id="prev_rad2" style="display:none;margin-top:4px;height:44px;border-radius:6px;border:1.5px solid #00A550;background-size:cover;background-position:center;"></div>
+
+        <div id="adSlotInputs" style="display:none"></div>
+      </div>
+
+      <div class="ml">🔑 New Password</div>
+      <input class="mi" type="password" id="inNp1" placeholder="New password">
+      <input class="mi" type="password" id="inNp2" placeholder="Confirm" style="margin-top:5px">
+
+      <button class="mbtn" onclick="saveAdmin()" style="margin-top:14px">💾 Save All</button>
+      <button class="mbtn ghost" onclick="closeAdmin()">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   CONFIG
+============================================================ */
+var DFLT = {
+  pw:'1234', adminPw:'1234', platName:'Babarpur Shop', myWa:'', apiKey:'', bannerUrls:[], tryAgainCount:5, maxSpinsPerDay:1,
+  shops:[
+    { name:'Rahul Medical', wa:'', logoUrl:'', isFree:true,  freeCount:5  },
+    { name:'Sharma Kirana', wa:'', logoUrl:'', isFree:false, freeCount:0  }
+  ],
+  adSlots:{ lad0:'',lad1:'',lad2:'',rad0:'',rad1:'',rad2:'' }
+};
+
+/* ══════════════════════════════════════
+   CLOUD STORAGE — JSONBin.io (FREE, no card needed)
+   
+   SETUP (2 minutes, no payment):
+   1. Go to https://jsonbin.io  → Sign up free
+   2. Click "Create Bin" → paste {} → Save
+   3. Copy the BIN ID from the URL (looks like: 64abc123...)
+   4. Go to Account → API Keys → copy your Master Key
+   5. Paste both below and redeploy to Netlify
+══════════════════════════════════════ */
+var BIN_ID  = '69bf07b1c3097a1dd5482783';      // e.g. "64abc123ef456"
+var API_KEY = '$2a$10$CpirJmFS/2QkriSRRRrcQ.Q677v/zoX4FrnojzccdblyBTFNP80ju';  // e.g. "$2b$10$abc..."
+var BIN_URL = 'https://api.jsonbin.io/v3/b/' + BIN_ID;
+
+var cloudReady = (BIN_ID !== 'YOUR_BIN_ID' && API_KEY !== 'YOUR_MASTER_KEY');
+
+/* ── STATS — stored in localStorage (works locally + on Netlify) ── */
+var STATS_KEY = 'bbs_stats';
+
+function getStats(){
+  try{ return JSON.parse(localStorage.getItem(STATS_KEY))||{total:0,today:0,lastDate:''}; }
+  catch(e){ return {total:0,today:0,lastDate:''}; }
+}
+function saveStats(s){ localStorage.setItem(STATS_KEY, JSON.stringify(s)); }
+
+function getTodayStr(){
+  var d=new Date();
+  return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+}
+
+function incrementStats(){
+  var s = getStats();
+  var today = getTodayStr();
+  if(s.lastDate !== today){ s.today=0; s.lastDate=today; } // reset daily
+  s.total = (s.total||0) + 1;
+  s.today = (s.today||0) + 1;
+  saveStats(s);
+  updateStatsDisplay();
+}
+
+function updateStatsDisplay(){
+  var s = getStats();
+  var today = getTodayStr();
+  if(s.lastDate !== today) s.today = 0;
+  var el = document.getElementById('statsDisplay');
+  if(el) el.textContent = '👥 Today: '+s.today+'  |  Total: '+s.total;
+  // Also update admin stats
+  var ae = document.getElementById('adminStats');
+  if(ae) ae.innerHTML = 'आज के spins: <b style="color:#FF6B00">'+s.today+'</b> &nbsp;|&nbsp; कुल spins: <b style="color:#FFD700">'+s.total+'</b>';
+}
+
+/* ── SPIN LIMIT per device per day ── */
+function getDeviceSpinsToday(){
+  var key = 'bbs_dev_'+getTodayStr();
+  return parseInt(localStorage.getItem(key)||'0');
+}
+function incrementDeviceSpins(){
+  var key = 'bbs_dev_'+getTodayStr();
+  var n = getDeviceSpinsToday()+1;
+  localStorage.setItem(key, n);
+  return n;
+}
+function getMaxSpinsPerDay(){
+  return parseInt(C.maxSpinsPerDay)||1;
+}
+
+var C = JSON.parse(JSON.stringify(DFLT));
+
+function ldCfg(){
+  // If running locally (file:// or content://) skip cloud, use localStorage directly
+  var isLocal = (window.location.protocol === 'file:' || window.location.protocol === 'content:');
+  if(cloudReady && !isLocal){
+    showLoader(true);
+    var msgEl = document.getElementById('loaderMsg');
+    var subEl = document.getElementById('loaderSub');
+    if(msgEl) msgEl.textContent = 'Cloud से load हो रहा है...';
+    if(subEl) subEl.style.display = 'none';
+    fetch(BIN_URL + '/latest', {
+      method: 'GET',
+      headers: {
+        'X-Master-Key': API_KEY,
+        'X-Bin-Meta':   'false',
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(function(r){
+      if(!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(function(data){
+      showLoader(false);
+      // JSONBin wraps response in { record: {...} } or returns data directly
+      var record = (data && data.record) ? data.record : data;
+      if(record && typeof record === 'object' && !Array.isArray(record)){
+        C = Object.assign(JSON.parse(JSON.stringify(DFLT)), record);
+        if(!C.shops)   C.shops   = DFLT.shops;
+        if(!C.adSlots) C.adSlots = DFLT.adSlots;
+      }
+      applyAll(); resize();
+    })
+    .catch(function(e){
+      showLoader(false);
+      console.warn('JSONBin load failed:', e.message);
+      ldFromLocal();
+      applyAll(); resize();
+    });
+  } else {
+    // Local file or cloud not configured — use localStorage
+    ldFromLocal();
+  }
+}
+
+function ldFromLocal(){
+  try{
+    var s = localStorage.getItem('bbs2');
+    if(s){
+      var o = JSON.parse(s);
+      C = Object.assign(JSON.parse(JSON.stringify(DFLT)), o);
+      if(!C.shops)   C.shops   = DFLT.shops;
+      if(!C.adSlots) C.adSlots = DFLT.adSlots;
+    }
+  }catch(e){}
+}
+
+function svCfg(){
+  // Always save locally first
+  localStorage.setItem('bbs2', JSON.stringify(C));
+
+  var isLocal = (window.location.protocol === 'file:' || window.location.protocol === 'content:');
+  if(!cloudReady || isLocal){
+    showSaveToast('💾 Local में save हुआ! Netlify पर upload करें cloud के लिए ☁️');
+    return;
+  }
+
+  // Save to JSONBin cloud
+  fetch(BIN_URL, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Master-Key': API_KEY,
+      'X-Bin-Versioning': 'false'
+    },
+    body: JSON.stringify(C)
+  })
+  .then(function(r){
+    if(!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  })
+  .then(function(){
+    showSaveToast('☁️ Cloud में save हो गया! ✅');
+  })
+  .catch(function(e){
+    showSaveToast('⚠️ Cloud save failed — local save done');
+    console.warn('JSONBin save error:', e.message);
+  });
+}
+
+function showLoader(show){
+  var el = document.getElementById('loader');
+  if(el) el.style.display = show ? 'flex' : 'none';
+}
+function showSaveToast(msg){
+  var t = document.getElementById('saveToast');
+  if(!t) return;
+  t.textContent = msg;
+  t.style.opacity = '1';
+  setTimeout(function(){ t.style.opacity = '0'; }, 3200);
+}
+
+function showLoader(show){
+  var el=document.getElementById('loader');
+  if(el) el.style.display=show?'flex':'none';
+}
+function showSaveToast(msg){
+  var t=document.getElementById('saveToast');
+  if(!t) return;
+  t.textContent=msg; t.style.opacity='1';
+  setTimeout(function(){t.style.opacity='0';},2800);
+}
+
+/* ============================================================
+   AUDIO
+============================================================ */
+var actx = null;
+function getAC(){
+  if(!actx) actx = new(window.AudioContext||window.webkitAudioContext)();
+  return actx;
+}
+function playTick(){
+  try{
+    var c=getAC(), o=c.createOscillator(), g=c.createGain();
+    o.connect(g); g.connect(c.destination);
+    o.type='square';
+    o.frequency.setValueAtTime(1100,c.currentTime);
+    o.frequency.exponentialRampToValueAtTime(500,c.currentTime+0.03);
+    g.gain.setValueAtTime(0.14,c.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+0.04);
+    o.start(c.currentTime); o.stop(c.currentTime+0.05);
+  }catch(e){}
+}
+document.addEventListener('touchstart',function(){try{getAC().resume();}catch(e){}},{once:true});
+document.addEventListener('click',function(){try{getAC().resume();}catch(e){}},{once:true});
+
+/* ============================================================
+   REEL POOL
+============================================================ */
+var VISIBLE = 5;
+var WIN_ROW = 2;
+var pool = [];
+
+function shuffle(a){
+  for(var i=a.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var t=a[i]; a[i]=a[j]; a[j]=t;
+  }
+  return a;
+}
+
+function buildPool(){
+  var p=[];
+  var shops = C.shops||[];
+  // Each shop contributes FREE slots (if isFree=true, freeCount times)
+  shops.forEach(function(shop,si){
+    if(shop.isFree){
+      var n = Math.max(1, parseInt(shop.freeCount)||5);
+      for(var i=0;i<n;i++){
+        p.push({label:'FREE', shopIdx:si, isFree:true});
+      }
+    }
+  });
+  // Fallback if no shops configured
+  if(!p.length){
+    p.push({label:'FREE', shopIdx:-1, isFree:true});
+  }
+  // Add Try Again slots
+  var taCount = parseInt(C.tryAgainCount)||5;
+  for(var i=0;i<taCount;i++){
+    p.push({label:'TRY AGAIN', shopIdx:-1, isTryAgain:true});
+  }
+  shuffle(p);
+  pool = p.concat(p).concat(p).concat(p);
+  scrollY=0;
+  drawFrame();
+}
+
+/* ============================================================
+   CANVAS
+============================================================ */
+var canvas = document.getElementById('reelCanvas');
+var ctx    = canvas.getContext('2d');
+var CW=0, CH=0, SYM_H=0;
+var scrollY=0;
+var lastTickIdx=-1;
+var isSpinning=false;
+
+function discColor(label){
+  if(label==='TRY AGAIN') return '#9B88FF';
+  return '#00C853'; // FREE — bright green
+}
+
+function resize(){
+  var rw=document.getElementById('rw');
+  CW=rw.clientWidth||120;
+  CH=rw.clientHeight||380;
+  var pr=window.devicePixelRatio||1;
+  canvas.width=CW*pr; canvas.height=CH*pr;
+  canvas.style.width=CW+'px'; canvas.style.height=CH+'px';
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(pr,pr);
+  SYM_H = CH/VISIBLE;
+  drawFrame();
+}
+
+// Cache of loaded shop images for canvas drawing
+var shopImgCache = {};
+
+function loadShopImg(shopIdx){
+  if(shopIdx < 0) return;
+  var shop = C.shops && C.shops[shopIdx];
+  if(!shop || !shop.logoUrl) return;
+  var url = shop.logoUrl;
+  if(shopImgCache[shopIdx]) return; // already loading/loaded
+  var img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.onload  = function(){ shopImgCache[shopIdx] = img; drawFrame(); };
+  img.onerror = function(){ shopImgCache[shopIdx] = null; };
+  shopImgCache[shopIdx] = 'loading';
+  img.src = url;
+}
+
+function preloadShopImages(){
+  shopImgCache = {};
+  if(!C.shops) return;
+  C.shops.forEach(function(s,i){ loadShopImg(i); });
+}
+
+function drawFrame(){
+  if(!SYM_H||!pool.length) return;
+  ctx.clearRect(0,0,CW,CH);
+  var pLen=pool.length;
+  var totalH=pLen*SYM_H;
+  var norm=((scrollY%totalH)+totalH)%totalH;
+  var topIdx=Math.floor(norm/SYM_H);
+  var off=norm%SYM_H;
+
+  // Layout: left half = shop image, right half = discount text
+  var imgW  = Math.floor(CW * 0.42);  // left 42% = image
+  var discX = imgW + Math.floor((CW - imgW) / 2); // centre of right portion
+  var fsMain= Math.floor(SYM_H * 0.46);
+
+  for(var row=0;row<=VISIBLE;row++){
+    var cellTop = row*SYM_H - off;
+    var cy      = cellTop + SYM_H/2;
+    var pIdx    = (topIdx+row)%pLen;
+    var item    = pool[pIdx];
+    var shopIdx = item.shopIdx;
+    var shop    = (C.shops && shopIdx >= 0) ? C.shops[shopIdx] : null;
+
+    if(item.isTryAgain || item.label==='TRY AGAIN'){
+      // ── FULL WIDTH: Try Again cell — no image, no split ──
+      // Purple background
+      ctx.fillStyle = 'rgba(123,104,238,0.15)';
+      ctx.fillRect(0, cellTop, CW, SYM_H);
+
+      // Big bold "TRY AGAIN" centered in full cell
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = '#9B88FF';
+      ctx.shadowColor = 'rgba(123,104,238,0.6)';
+      ctx.shadowBlur = 10;
+      var fsTa = Math.floor(SYM_H * 0.38);
+      ctx.font = '800 '+fsTa+'px "Baloo 2",cursive';
+      ctx.fillText('TRY',   CW/2, cy - fsTa*0.52);
+      ctx.fillText('AGAIN', CW/2, cy + fsTa*0.52);
+      ctx.shadowBlur = 0;
+
+    } else {
+      // ── NORMAL cell: left image + right discount ──
+
+      // LEFT: shop image
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(0, cellTop, imgW, SYM_H);
+      ctx.clip();
+
+      var cachedImg = (shopIdx >= 0) ? shopImgCache[shopIdx] : null;
+      if(cachedImg && cachedImg !== 'loading'){
+        ctx.drawImage(cachedImg, 0, cellTop, imgW, SYM_H);
+        ctx.fillStyle = 'rgba(0,0,0,0.25)';
+        ctx.fillRect(0, cellTop, imgW, SYM_H);
+      } else {
+        ctx.fillStyle = 'rgba(255,107,0,0.12)';
+        ctx.fillRect(0, cellTop, imgW, SYM_H);
+        if(shop){
+          ctx.font = 'bold '+Math.floor(SYM_H*0.3)+'px "Baloo 2",cursive';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillStyle = 'rgba(255,150,50,0.5)';
+          ctx.fillText(shop.name.slice(0,2).toUpperCase(), imgW/2, cy);
+          if(shopIdx >= 0 && !shopImgCache[shopIdx]) loadShopImg(shopIdx);
+        }
+      }
+      ctx.restore();
+
+      // Vertical divider
+      ctx.strokeStyle = 'rgba(255,107,0,0.3)';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(imgW, cellTop); ctx.lineTo(imgW, cellTop+SYM_H); ctx.stroke();
+
+      // RIGHT: discount text
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = discColor(item.label);
+      ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0;
+      ctx.font = '800 '+fsMain+'px "Baloo 2",cursive';
+      ctx.fillText(item.label, discX, cy);
+    }
+
+    // Row divider (always)
+    var dY = cellTop + SYM_H;
+    if(dY > 0 && dY < CH){
+      ctx.strokeStyle = 'rgba(255,255,255,0.07)';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(0,dY); ctx.lineTo(CW,dY); ctx.stroke();
+    }
+  }
+
+  // Tick on symbol change at win line
+  var cRow = Math.round((CH/2+off)/SYM_H - 0.5);
+  cRow = Math.max(0, Math.min(VISIBLE, cRow));
+  var cIdx = (topIdx+cRow) % pLen;
+  if(cIdx !== lastTickIdx){ lastTickIdx=cIdx; if(isSpinning) playTick(); }
+}
+
+/* ============================================================
+   SPIN ENGINE — time-based, guaranteed to stop
+============================================================ */
+var animId=null;
+var busy=false;
+var currentWin=null;
+
+/* Read which pool item is EXACTLY at the win line right now.
+   Must match drawFrame logic exactly:
+   - norm = scrollY mod totalH
+   - topIdx = floor(norm / SYM_H)  ← item whose cell starts at negative offset
+   - off = norm % SYM_H            ← how many px of topIdx cell are hidden above
+   - row R cell centre = R*SYM_H - off + SYM_H/2
+   - win line is at CH/2
+   - solve: R*SYM_H - off + SYM_H/2 = CH/2
+     => R = (CH/2 + off - SYM_H/2) / SYM_H
+     => R = (CH - SYM_H) / (2*SYM_H) + off/SYM_H
+   - winRow = round(R), pool index = (topIdx + winRow) % pLen
+*/
+function getWinLineItem(){
+  var pLen   = pool.length;
+  var totalH = pLen * SYM_H;
+  var norm   = ((scrollY % totalH) + totalH) % totalH;
+  var topIdx = Math.floor(norm / SYM_H);
+  var off    = norm % SYM_H;
+  // Which row number has its centre closest to CH/2?
+  // cellCentre(row) = row*SYM_H - off + SYM_H/2
+  // We want cellCentre(row) == CH/2
+  // row = (CH/2 + off - SYM_H/2) / SYM_H
+  var winRow = Math.round((CH/2 + off - SYM_H/2) / SYM_H);
+  winRow = Math.max(0, Math.min(VISIBLE, winRow));
+  var winIdx = (topIdx + winRow) % pLen;
+  return pool[winIdx];
+}
+
+function doSpin(){
+  if(busy) return;
+  try{ getAC().resume(); }catch(e){}
+
+  // Check daily spin limit per device
+  var spinsToday = getDeviceSpinsToday();
+  var maxSpins   = getMaxSpinsPerDay();
+  if(spinsToday >= maxSpins){
+    showLimitMsg();
+    return;
+  }
+
+  busy=true; isSpinning=true;
+  document.getElementById('spinBtn').disabled=true;
+  document.getElementById('rw').classList.remove('wf');
+  incrementDeviceSpins();
+  incrementStats();
+  sendAlert('🎰 Spin किया! Platform: '+(C.platName||'Babarpur Shop'));
+
+  // ── TARGETING: pick result and find exact landing position ──
+  var pLen   = pool.length;
+  var totalH = pLen * SYM_H;
+
+  // Current scroll normalised
+  var norm   = ((scrollY % totalH) + totalH) % totalH;
+  // Current top index (item at top of visible window, may be partial)
+  var curTop = Math.floor(norm / SYM_H);
+
+  // Pick result randomly from pool
+  var result = pool[Math.floor(Math.random() * pLen)];
+
+  // We want pool[targetIdx] to sit at WIN_ROW after landing.
+  // When off=0: item at row R = pool[(curTop + R) % pLen]
+  // So we need a targetTop such that:
+  //   pool[(targetTop + WIN_ROW) % pLen] === result
+  //   targetTop = targetIdx - WIN_ROW  (mod pLen)
+  //
+  // Find targetIdx in pool matching result, at least MIN_LOOPS*pLen ahead of curTop
+  var MIN_LOOPS = 3;
+  var searchStart = curTop + MIN_LOOPS * pLen; // start searching from here
+  var targetIdx = -1;
+  for(var i = 0; i < pLen; i++){
+    var ci = (searchStart + WIN_ROW + i) % pLen;
+    if(pool[ci].label === result.label &&
+       pool[ci].shopIdx === result.shopIdx &&
+       (pool[ci].isTryAgain||false) === (result.isTryAgain||false)){
+      targetIdx = ci;
+      // advance = how many symbols to scroll from curTop to (targetIdx - WIN_ROW)
+      var targetTop = ((targetIdx - WIN_ROW) % pLen + pLen) % pLen;
+      // Distance from curTop to targetTop going forward:
+      var dist = (targetTop - curTop % pLen + pLen) % pLen;
+      if(dist === 0) dist = pLen; // at least one full loop
+      var advance = MIN_LOOPS * pLen + dist;
+      break;
+    }
+  }
+  if(targetIdx < 0){
+    // Fallback
+    var advance = MIN_LOOPS * pLen;
+    targetIdx = ((curTop + advance + WIN_ROW) % pLen + pLen) % pLen;
+    result = pool[targetIdx];
+  }
+
+  // Total pixels — exact integer multiple of SYM_H, no float drift
+  var totalPx = Math.round(advance) * SYM_H;
+  var finalScrollY = Math.round(scrollY / SYM_H) * SYM_H + totalPx;
+
+  var TOTAL_MS    = 2800;
+  var startScroll = scrollY;
+  var startTime   = null;
+
+  if(animId) cancelAnimationFrame(animId);
+
+  function easeInOutCubic(t){
+    return t<0.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2;
+  }
+
+  function step(ts){
+    if(!startTime) startTime=ts;
+    var elapsed = ts - startTime;
+    var t = Math.min(elapsed / TOTAL_MS, 1.0);
+    var e = easeInOutCubic(t);
+    scrollY = startScroll + totalPx * e;
+    drawFrame();
+
+    if(t < 1.0){
+      animId = requestAnimationFrame(step);
+    } else {
+      // Snap to exact symbol boundary — force off=0 so win line reads cleanly
+      scrollY = finalScrollY;
+      var norm2 = ((scrollY % totalH) + totalH) % totalH;
+      // Round to nearest symbol boundary so off=0 exactly
+      var snappedIdx = Math.round(norm2 / SYM_H);
+      scrollY = snappedIdx * SYM_H;
+      // Normalise
+      scrollY = ((scrollY % totalH) + totalH) % totalH;
+      drawFrame();
+      isSpinning = false;
+
+      // ── READ ACTUAL WIN LINE — ground truth after clean snap ──
+      var actualResult = getWinLineItem();
+      currentWin = actualResult;
+      onDone(actualResult);
+    }
+  }
+  animId = requestAnimationFrame(step);
+}
+
+function onDone(result){
+  var shop = (C.shops&&result.shopIdx>=0) ? C.shops[result.shopIdx] : null;
+  var shopName = shop ? shop.name : '';
+  sendAlert('🎉 Result: '+result.label+' — '+shopName);
+
+  // Set validity time in popup
+  var now = new Date();
+  var exp = new Date(); exp.setHours(21,0,0,0); // valid till 9 PM today
+  var hLeft = Math.max(0, Math.round((exp-now)/3600000));
+  var vEl = document.getElementById('validityText');
+  if(vEl) vEl.textContent = hLeft > 0 ? 'आज रात 9 बजे तक valid ('+hLeft+' घंटे बचे)' : 'आज valid है — अभी जाएं!';
+
+  // Try Again — no popup, just re-enable spin instantly with message
+  if(result.isTryAgain || result.label==='TRY AGAIN'){
+    document.getElementById('rw').classList.remove('wf');
+    var rt = document.getElementById('rt');
+    if(rt){ rt.style.color='#7B68EE'; rt.textContent='🔄 Try Again! एक और spin मुफ़्त!'; }
+    setTimeout(function(){
+      busy=false;
+      document.getElementById('spinBtn').disabled=false;
+      if(rt){ rt.style.color='#44445A'; rt.textContent='— फिर से खेलें! —'; }
+    },1000);
+    return;
+  }
+
+  document.getElementById('rw').classList.add('wf');
+  spawnConfetti();
+
+  // Show popup
+  document.getElementById('popVal').textContent  = '🎁 FREE!';
+  document.getElementById('popShop').textContent = shopName ? shopName+' की तरफ से' : '';
+  document.getElementById('popHint').textContent = 'नीचे button दबाएं — दुकानदार को WhatsApp करें और FREE item लें!';
+  document.getElementById('btnClaim').style.display = '';
+  document.getElementById('winPop').classList.add('open');
+
+  setTimeout(function(){
+    busy=false;
+    document.getElementById('spinBtn').disabled=false;
+  },1200);
+}
+
+function claimDiscount(){
+  if(!currentWin) return;
+  var shop=(C.shops&&currentWin.shopIdx>=0)?C.shops[currentWin.shopIdx]:null;
+  if(!shop||!shop.wa){ alert('दुकानदार का नंबर available नहीं है।'); return; }
+  var num=(shop.wa||'').replace(/\D/g,'');
+  var msg='🎉 मैंने *'+(C.platName||'Babarpur Shop')+'* Spin & Win में *'+currentWin.label+'* discount जीती है!\n\nकृपया मेरी discount confirm करें। 🙏';
+  window.open('https://wa.me/'+num+'?text='+encodeURIComponent(msg),'_blank');
+  closeWinPop();
+}
+function closeWinPop(){ document.getElementById('winPop').classList.remove('open'); }
+
+/* ============================================================
+   ARROW TRIANGLE — premium shop branding
+============================================================ */
+function updateArrow(){
+  var shop = C.shops&&C.shops.length ? C.shops[0] : null;
+  var name = shop ? (shop.name||'SPONSOR').toUpperCase() : 'SPONSOR';
+  var logoUrl = shop ? (shop.logoUrl||'') : '';
+
+  var nEl=document.getElementById('arrowName');
+  var iEl=document.getElementById('arrowInitials');
+  var lEl=document.getElementById('arrowLogo');
+  if(nEl) nEl.textContent=name.length>12?name.slice(0,11)+'…':name;
+  if(iEl) iEl.textContent=name.slice(0,2);
+  if(lEl){
+    if(logoUrl){
+      lEl.innerHTML='<img src="'+logoUrl+'" alt="" onerror="this.style.display=\'none\'">';
+    } else {
+      lEl.innerHTML='<span class="arrow-initials">'+name.slice(0,2)+'</span>';
+    }
+  }
+}
+
+function arrowClick(){
+  var shop=C.shops&&C.shops.length?C.shops[0]:null;
+  if(!shop||!shop.wa) return;
+  var num=(shop.wa||'').replace(/\D/g,'');
+  var msg='नमस्ते! मैंने *'+(C.platName||'Babarpur Shop')+'* Spin & Win में *'+shop.name+'* का ad देखा।';
+  window.open('https://wa.me/'+num+'?text='+encodeURIComponent(msg),'_blank');
+}
+
+/* ============================================================
+   BANNER + AD SLOTS
+============================================================ */
+function renderBanner(){
+  var track=document.getElementById('topBanner');
+  if(!track) return;
+  track.innerHTML='';
+
+  var urls=(C.bannerUrls||[]).filter(function(u){return u&&u.trim();});
+  var items=[];
+
+  if(!urls.length){
+    // Placeholders
+    for(var i=0;i<5;i++) items.push(null);
+  } else {
+    items=urls;
+  }
+
+  // Build ads — duplicate for seamless infinite scroll
+  function makeAd(url, idx){
+    var d=document.createElement('div');
+    d.className='b-ad';
+    if(url){
+      d.style.backgroundImage='url("'+url.trim()+'")';
+    } else {
+      d.innerHTML='<div class="b-ph">AD BANNER '+(idx+1)+'</div>';
+    }
+    return d;
+  }
+
+  // Original set + duplicate for seamless loop
+  items.forEach(function(url,i){ track.appendChild(makeAd(url,i)); });
+  items.forEach(function(url,i){ track.appendChild(makeAd(url,i)); });
+
+  // Set animation duration based on item count (each item ~160px + 10px gap)
+  var totalW = items.length * 170;
+  var dur = Math.max(8, items.length * 3); // 3s per item, min 8s
+  track.style.animationDuration = dur+'s';
+  // Set track width so translateX(-50%) works correctly
+  track.style.width = (totalW * 2)+'px';
+}
+
+function renderAdSlots(){
+  var ids=['lad0','lad1','lad2','rad0','rad1','rad2'];
+  var labels={lad0:'Premium Ad',lad1:'Ad Slot',lad2:'Ad Slot',rad0:'Premium Ad',rad1:'Ad Slot',rad2:'Ad Slot'};
+  var icons ={lad0:'🌟',lad1:'📢',lad2:'📢',rad0:'🌟',rad1:'📢',rad2:'📢'};
+  ids.forEach(function(id){
+    var el=document.getElementById(id);
+    if(!el) return;
+    var url=(C.adSlots&&C.adSlots[id])||'';
+    el.innerHTML='';
+    if(url && url.trim()){
+      // Use background-image instead of <img> — avoids all CORS/onerror issues
+      el.style.backgroundImage='url("'+url.trim()+'")';
+      el.style.backgroundSize='cover';
+      el.style.backgroundPosition='center';
+      el.style.backgroundRepeat='no-repeat';
+    } else {
+      el.style.backgroundImage='none';
+      el.innerHTML='<div class="slot-ph"><div class="si">'+icons[id]+'</div><div class="st">'+labels[id]+'</div></div>';
+    }
+  });
+}
+
+/* ============================================================
+   WHATSAPP
+============================================================ */
+function sendAlert(msg){
+  // Notifications disabled — CallMeBot removed
+  // Future: add Twilio/other service here if needed
+}
+function resetDeviceSpin(){
+  var key='bbs_dev_'+getTodayStr();
+  localStorage.removeItem(key);
+  restoreSpinBtn();
+  updateStatsDisplay();
+  var ae=document.getElementById('adminStats');
+  if(ae){
+    ae.innerHTML='<span style="color:#00A550;font-weight:700;">✅ Spin reset! अब SPIN कर सकते हैं।</span>';
+    setTimeout(function(){ updateStatsDisplay(); },2000);
+  }
+}
+
+function resetAllStats(){
+  if(!confirm('सभी spin statistics delete होंगी। Sure हो?')) return;
+  localStorage.removeItem('bbs_stats');
+  // Also remove today's device key
+  var key='bbs_dev_'+getTodayStr();
+  localStorage.removeItem(key);
+  restoreSpinBtn();
+  updateStatsDisplay();
+  var ae=document.getElementById('adminStats');
+  if(ae){
+    ae.innerHTML='<span style="color:#00A550;font-weight:700;">✅ Reset! अब SPIN कर सकते हैं।</span>';
+    setTimeout(function(){ updateStatsDisplay(); },2000);
+  }
+}
+
+function showLimitMsg(){
+  var rt  = document.getElementById('rt');
+  var btn = document.getElementById('spinBtn');
+  if(rt){ rt.style.color='#FF6B00'; rt.textContent='⏰ आज का spin हो गया! कल फिर आएं 😊'; }
+  if(btn){ btn.textContent='कल आएं!'; btn.style.background='linear-gradient(135deg,#888,#555)'; btn.disabled=true; }
+}
+
+function restoreSpinBtn(){
+  var btn=document.getElementById('spinBtn');
+  var rt=document.getElementById('rt');
+  if(btn){ btn.textContent='SPIN'; btn.style.background=''; btn.disabled=false; }
+  if(rt){ rt.style.color='#44445A'; rt.textContent='— फिर से खेलें! —'; }
+}
+
+function waHelp(){
+  var num=(C.myWa||'').replace(/\D/g,'');
+  if(!num){ alert('Helpline number set नहीं है।'); return; }
+  var msg='नमस्ते! मुझे '+(C.platName||'Babarpur Shop')+' Spin & Win में मदद चाहिए।';
+  window.open('https://wa.me/'+num+'?text='+encodeURIComponent(msg),'_blank');
+}
+
+/* ============================================================
+   CONFETTI
+============================================================ */
+function spawnConfetti(){
+  var cl=['#FF6B00','#FFD700','#00A550','#E8001D','#FF9500'];
+  for(var i=0;i<24;i++){
+    var e=document.createElement('div'); e.className='cf';
+    var sz=5+Math.random()*7, d=0.7+Math.random()*0.8;
+    e.style.cssText='left:'+(15+Math.random()*70)+'%;top:8%;'
+      +'width:'+sz+'px;height:'+sz+'px;'
+      +'border-radius:'+(Math.random()>.5?'50%':'3px')+';'
+      +'background:'+cl[i%cl.length]+';'
+      +'animation-duration:'+d+'s;';
+    document.body.appendChild(e);
+    setTimeout(function(){ try{this.remove();}catch(err){} }.bind(e),(d+.15)*1000);
+  }
+}
+
+/* ============================================================
+   ADMIN
+============================================================ */
+function getSavedPw(){ return C.adminPw || DFLT.pw; }
+
+function openAdmin(){
+  document.getElementById('adminOv').classList.add('open');
+  document.getElementById('pwStep').style.display='';
+  document.getElementById('setStep').style.display='none';
+  document.getElementById('pwIn').value='';
+  document.getElementById('pwErr').style.display='none';
+  setTimeout(function(){document.getElementById('pwIn').focus();},100);
+}
+function closeAdmin(){ document.getElementById('adminOv').classList.remove('open'); }
+function chkPw(){
+  if(document.getElementById('pwIn').value===getSavedPw()){
+    document.getElementById('pwStep').style.display='none';
+    document.getElementById('setStep').style.display='';
+    populateAdmin();
+  } else {
+    var e=document.getElementById('pwErr'); e.style.display='block';
+    setTimeout(function(){e.style.display='none';},2000);
+  }
+}
+
+function setVal(id,val){var el=document.getElementById(id);if(el)el.value=val;}
+
+function populateAdmin(){
+  setVal('inPlatName', C.platName||'');
+  setVal('inTryAgain', C.tryAgainCount!==undefined ? C.tryAgainCount : 5);
+  setVal('inMaxSpins', C.maxSpinsPerDay||1);
+  setVal('inMyWa',     C.myWa||'');
+  // inBanner removed — individual banner slot fields used now
+  updateStatsDisplay();
+  renderBannerAdmin();
+  renderShopAdmin();
+  fillAdSlots();
+}
+
+function renderShopAdmin(){
+  var cont=document.getElementById('shopList');
+  cont.innerHTML='';
+  (C.shops||[]).forEach(function(shop,si){
+    var isPrem  = si===0;
+    var isFree  = shop.isFree ? true : false;
+    var lTick   = shop.logoUrl ? '✅' : '○';
+    var lCol    = shop.logoUrl ? '#00A550' : '#ccc';
+    var prevHtml= shop.logoUrl
+      ? '<div id="lprev'+si+'" style="margin-top:5px;height:54px;border-radius:7px;overflow:hidden;border:1.5px solid #00A550;background-size:cover;background-position:center;background-image:url(\'' +shop.logoUrl+ '\');"></div>'
+      : '<div id="lprev'+si+'" style="display:none"></div>';
+    var togBg    = isFree ? '#00A550' : '#ddd';
+    var thumbLeft= isFree ? '23px' : '3px';
+    var wrapBg   = isFree ? 'rgba(0,200,83,0.08)' : 'rgba(255,255,255,0.03)';
+    var wrapBdr  = isFree ? '#00A550' : '#ddd';
+    var freeLabel= isFree ? 'FREE item देंगे ✅' : 'FREE नहीं देंगे';
+    var freeCol  = isFree ? '#00A550' : '#999';
+    var card=document.createElement('div');
+    card.className='shop-card';
+    card.innerHTML=
+      '<div class="sc-head">'
+        +'<span>🏪 '+(isPrem?'<span style="color:#FF6B00">▶ Arrow Sponsor</span> — ':'')+'Shop '+(si+1)+'</span>'
+        +'<button class="btn-del" onclick="delShop('+si+')">✕</button>'
+      +'</div>'
+      +'<div class="ml" style="margin-top:0">दुकान का नाम</div>'
+      +'<input class="mi" id="sn'+si+'" type="text" placeholder="Shop Name" value="'+(shop.name||'')+'">'
+      +'<div class="ml">WhatsApp Number</div>'
+      +'<input class="mi" id="sw'+si+'" type="tel" placeholder="919XXXXXXXXX" value="'+(shop.wa||'')+'">'
+      +'<div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;">'
+        +'<div class="ml" style="margin:0">🖼 Shop Image URL'+(isPrem?' <small style="color:#FF6B00">(triangle भी)</small>':'')+'</div>'
+        +'<span id="ltick'+si+'" style="color:'+lCol+';font-size:0.88rem;font-weight:700;">'+lTick+'</span>'
+      +'</div>'
+      +'<input class="mi" id="sl'+si+'" type="text" placeholder="https://i.ibb.co/..." value="'+(shop.logoUrl||'')+'" oninput="onLogoChange('+si+',this.value)">'
+      +prevHtml
+      +'<div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;background:'+wrapBg+';border:1.5px solid '+wrapBdr+';border-radius:8px;padding:10px 12px;">'
+        +'<div>'
+          +'<div style="font-size:0.82rem;font-weight:800;color:'+freeCol+'">🎁 '+freeLabel+'</div>'
+          +'<div style="font-size:0.65rem;color:#aaa;margin-top:2px">customer जीते तो FREE item/service मिलेगी</div>'
+        +'</div>'
+        +'<div onclick="toggleFree('+si+')" style="cursor:pointer;">'
+          +'<div style="width:44px;height:24px;background:'+togBg+';border-radius:12px;position:relative;transition:background 0.2s;" id="ftog'+si+'">'
+            +'<div style="position:absolute;top:3px;left:'+thumbLeft+';width:18px;height:18px;background:#fff;border-radius:50%;transition:left 0.2s;" id="fthumb'+si+'"></div>'
+          +'</div>'
+        +'</div>'
+      +'</div>'
+      +'<div id="fcountWrap'+si+'" style="display:'+(isFree?'block':'none')+';margin-top:8px;">'
+        +'<div class="ml" style="margin-top:0">रील में कितनी बार FREE आए</div>'
+        +'<input class="mi" id="sfc'+si+'" type="number" min="1" max="30" value="'+(shop.freeCount||5)+'" placeholder="5">'
+        +'<div style="font-size:0.65rem;color:#aaa;margin-top:3px">ज़्यादा = ज़्यादा बार FREE आएगा</div>'
+      +'</div>';
+    cont.appendChild(card);
+  });
+}
+
+function onLogoChange(si, val){
+  var tick = document.getElementById('ltick'+si);
+  var prev = document.getElementById('lprev'+si);
+  val = val.trim();
+  if(tick){
+    tick.textContent = val ? '✅' : '○';
+    tick.style.color = val ? '#00A550' : '#ccc';
+  }
+  if(prev){
+    if(val){
+      prev.style.display = 'block';
+      prev.style.cssText = 'display:block;margin-top:5px;height:50px;border-radius:7px;overflow:hidden;border:1.5px solid #00A550;background-size:cover;background-position:center;background-image:url(\''+val+'\');';
+    } else {
+      prev.style.display = 'none';
+      prev.style.backgroundImage = 'none';
+    }
+  }
+}
+
+function toggleFree(si){
+  var shop=C.shops[si];
+  shop.isFree = !shop.isFree;
+  renderShopAdmin(); // re-render to update UI
+}
+function toggleD(el){ /* legacy - no longer used */ }
+
+function addShop(){
+  if(!C.shops) C.shops=[];
+  C.shops.push({name:'New Shop',wa:'',logoUrl:'',isFree:false,freeCount:5});
+  renderShopAdmin();
+}
+function delShop(si){
+  C.shops.splice(si,1); renderShopAdmin();
+}
+
+function renderBannerAdmin(){
+  var cont=document.getElementById('bannerSlotList');
+  if(!cont) return;
+  cont.innerHTML='';
+  // Always use C.bannerUrls — loaded from cloud
+  var urls=(C.bannerUrls&&C.bannerUrls.length) ? C.bannerUrls.slice() : [''];
+  urls.forEach(function(url,i){
+    var row=document.createElement('div');
+    row.style.cssText='display:flex;align-items:center;gap:6px;margin-bottom:7px;';
+    var hasTick = url && url.trim() ? '✅' : '○';
+    var tickCol = url && url.trim() ? '#00A550' : '#ccc';
+    row.innerHTML=
+      '<input class="mi" id="burl'+i+'" type="text" placeholder="https://i.ibb.co/... (640×120px)" value="'+(url||'')+'" style="flex:1" oninput="onBannerUrlChange('+i+',this.value)">'
+      +'<span id="btick'+i+'" style="color:'+tickCol+';font-size:0.85rem;font-weight:700;flex-shrink:0;">'+hasTick+'</span>'
+      +'<button onclick="removeBannerSlot('+i+')" style="background:none;border:none;color:#ccc;font-size:1rem;cursor:pointer;flex-shrink:0;">✕</button>';
+    cont.appendChild(row);
+    // Preview
+    if(url && url.trim()){
+      var prev=document.createElement('div');
+      prev.style.cssText='height:32px;border-radius:5px;margin-bottom:8px;overflow:hidden;border:1px solid #00A550;background:url("'+url.trim()+'") center/cover;';
+      cont.appendChild(prev);
+    }
+  });
+}
+
+function onBannerUrlChange(i, val){
+  var tick=document.getElementById('btick'+i);
+  if(tick){ tick.textContent=val.trim()?'✅':'○'; tick.style.color=val.trim()?'#00A550':'#ccc'; }
+}
+
+function addBannerSlot(){
+  if(!C.bannerUrls) C.bannerUrls=[];
+  C.bannerUrls.push('');
+  renderBannerAdmin();
+}
+
+function removeBannerSlot(i){
+  if(!C.bannerUrls) return;
+  C.bannerUrls.splice(i,1);
+  renderBannerAdmin();
+}
+
+function fillAdSlots(){
+  var ids=['lad0','lad1','lad2','rad0','rad1','rad2'];
+  ids.forEach(function(id){
+    var inp=document.getElementById('ai_'+id);
+    var prev=document.getElementById('prev_'+id);
+    // Always read from C which was loaded from cloud
+    var url=(C.adSlots&&C.adSlots[id])||'';
+    if(inp){
+      inp.value=url;
+      // Attach live handler
+      (function(iid){
+        inp.oninput=function(){ onAdUrlChange(iid,this.value); };
+      })(id);
+    }
+    if(prev){
+      if(url){
+        prev.style.display='block';
+        prev.style.backgroundImage='url("'+url+'")';
+        prev.style.backgroundSize='cover';
+        prev.style.backgroundPosition='center';
+      } else {
+        prev.style.display='none';
+        prev.style.backgroundImage='none';
+      }
+    }
+  });
+}
+
+function renderAdAdmin(){
+  var cont=document.getElementById('adSlotInputs');
+  if(!cont) return;
+  cont.innerHTML='';
+  var ids  =['lad0','lad1','lad2','rad0','rad1','rad2'];
+  var names=['Left Top ⭐ (300×400px)','Left Mid (300×300px)','Left Bottom (300×300px)',
+             'Right Top ⭐ (300×400px)','Right Mid (300×300px)','Right Bottom (300×300px)'];
+
+  ids.forEach(function(id, i){
+    var url=(C.adSlots&&C.adSlots[id])||'';
+
+    // Label row
+    var labelRow=document.createElement('div');
+    labelRow.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-top:10px;';
+
+    var lbl=document.createElement('div');
+    lbl.className='ml'; lbl.style.margin='0';
+    lbl.textContent=names[i];
+
+    var tick=document.createElement('span');
+    tick.id='tick_'+id;
+    tick.style.cssText='font-size:0.85rem;font-weight:700;color:'+(url?'#00A550':'#ccc')+';';
+    tick.textContent=url?'✅':'○';
+
+    labelRow.appendChild(lbl);
+    labelRow.appendChild(tick);
+    cont.appendChild(labelRow);
+
+    // Input
+    var inp=document.createElement('input');
+    inp.className='mi'; inp.id='ai_'+id;
+    inp.type='text'; inp.placeholder='https://i.ibb.co/... paste करें';
+    inp.value=url;
+    inp.style.marginTop='4px';
+    inp.addEventListener('input', (function(iid){ return function(){ onAdUrlChange(iid, this.value); }; })(id));
+    cont.appendChild(inp);
+
+    // Preview
+    var prev=document.createElement('div');
+    prev.id='prev_'+id;
+    if(url){
+      prev.style.cssText='margin-top:5px;height:50px;border-radius:6px;overflow:hidden;border:1.5px solid #00A550;background:url("'+url+'") center/cover;';
+    } else {
+      prev.style.display='none';
+    }
+    cont.appendChild(prev);
+  });
+}
+
+function onAdUrlChange(id, val){
+  var tick=document.getElementById('tick_'+id);
+  var prev=document.getElementById('prev_'+id);
+  val=(val||'').trim();
+  if(tick){ tick.textContent=val?'✅':'○'; tick.style.color=val?'#00A550':'#ccc'; }
+  if(prev){
+    if(val){
+      prev.style.cssText='display:block;margin-top:5px;height:50px;border-radius:6px;overflow:hidden;border:1.5px solid #00A550;background:url("'+val+'") center/cover;';
+    } else {
+      prev.style.display='none';
+      prev.style.backgroundImage='none';
+    }
+  }
+}
+
+function saveAdmin(){
+  // ── Basic settings ──
+  var pn = document.getElementById('inPlatName').value.trim();
+  if(pn) C.platName = pn;
+
+  var ta = document.getElementById('inTryAgain').value;
+  if(ta!=='') C.tryAgainCount = parseInt(ta)||0;
+
+  var ms = document.getElementById('inMaxSpins').value;
+  if(ms!=='') C.maxSpinsPerDay = parseInt(ms)||1;
+
+  var wa = (document.getElementById('inMyWa').value||'').replace(/[^0-9]/g,'');
+  if(wa) C.myWa = wa;
+
+  // ── Banner URLs — only update if at least one field exists ──
+  var bannerFields=[], bi=0;
+  while(document.getElementById('burl'+bi)){
+    bannerFields.push((document.getElementById('burl'+bi).value||'').trim());
+    bi++;
+  }
+  // Only overwrite if we have banner fields rendered (meaning admin opened properly)
+  if(bi > 0){
+    C.bannerUrls = bannerFields.filter(function(u){ return u; });
+  }
+  // If no banner fields found at all — keep existing C.bannerUrls untouched
+
+  // ── Ad slots — only update if field has value OR field is explicitly cleared ──
+  if(!C.adSlots) C.adSlots={};
+  ['lad0','lad1','lad2','rad0','rad1','rad2'].forEach(function(id){
+    var el=document.getElementById('ai_'+id);
+    if(el){
+      // Field exists — save its value (even if empty, user may have cleared it)
+      C.adSlots[id]=(el.value||'').trim();
+    }
+    // If field doesn't exist in DOM — keep existing value untouched
+  });
+
+  // ── Shops — only update fields that exist in DOM ──
+  (C.shops||[]).forEach(function(shop,si){
+    var sn  = document.getElementById('sn'+si);
+    var sw  = document.getElementById('sw'+si);
+    var sl  = document.getElementById('sl'+si);
+    var sfc = document.getElementById('sfc'+si);
+    if(sn && sn.value.trim())  shop.name      = sn.value.trim();
+    if(sw)  shop.wa        = (sw.value||'').replace(/[^0-9]/g,'');
+    if(sl)  shop.logoUrl   = (sl.value||'').trim();
+    if(sfc && sfc.value) shop.freeCount = parseInt(sfc.value)||1;
+    // isFree updated live by toggleFree()
+  });
+
+  // ── Password ──
+  var p1=document.getElementById('inNp1').value;
+  var p2=document.getElementById('inNp2').value;
+  if(p1&&p1===p2){
+    C.adminPw=p1;
+    localStorage.setItem('bbs_pw',p1);
+  }
+
+  svCfg();
+  preloadShopImages();
+  applyAll();
+  closeAdmin();
+}
+
+document.getElementById('adminOv').addEventListener('click',function(e){
+  if(e.target===this){
+    // Only close on outside click if we're on the password step
+    // If already logged in (settings step visible), don't close on outside click
+    var ss=document.getElementById('setStep');
+    if(ss && ss.style.display!=='none') return; // stay open
+    closeAdmin();
+  }
+});
+document.getElementById('winPop').addEventListener('click',function(e){if(e.target===this)closeWinPop();});
+
+/* ============================================================
+   APPLY ALL
+============================================================ */
+function applyAll(){
+  document.getElementById('shopTitle').textContent='🏪 '+(C.platName||'Babarpur Shop');
+  renderBanner();
+  renderAdSlots();
+  updateArrow();
+  preloadShopImages();
+  buildPool();
+  updateStatsDisplay();
+}
+
+/* ============================================================
+   INIT
+============================================================ */
+window.addEventListener('load',function(){
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){
+      ldCfg();
+      // If cloudReady, ldCfg handles applyAll+resize after fetch
+      // If not cloudReady, call them now
+      if(!cloudReady){
+        applyAll(); resize();
+      }
+    });
+  });
+});
+window.addEventListener('resize',function(){
+  fixHeight();
+  if(!busy) resize();
+});
+</script>
+</body>
+</html>
